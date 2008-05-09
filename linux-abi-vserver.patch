@@ -1,0 +1,24 @@
+--- linux-abi-0.1/coff/binfmt-coff.c
++++ linux-abi-0.1/coff/binfmt-coff.c~
+@@ -32,6 +32,9 @@
+ #include <linux/file.h>
+ #include <linux/unistd.h>
+ #include <linux/syscalls.h>
++#ifdef CONFIG_VSERVER
++#include <linux/vs_memory.h>
++#endif
+ #include <asm/uaccess.h>
+ 
+ #include "../include/util/trace.h"
+--- linux-abi-0.1/xout/binfmt-xout.c
++++ linux-abi-0.1/xout/binfmt-xout.c~
+@@ -30,6 +30,9 @@
+ #include <linux/slab.h>
+ #include <linux/unistd.h>
+ #include <linux/syscalls.h>
++#ifdef CONFIG_VSERVER
++#include <linux/vs_memory.h>
++#endif
+ 
+ #include <asm/uaccess.h>
+ #include <asm/highmem.h>
