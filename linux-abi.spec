@@ -18,6 +18,7 @@ License:	GPL
 Group:		Base/Kernel
 Source0:	http://dl.sourceforge.net/linux-abi/IBCS-3_6.TGZ
 # Source0-md5:	7f9f908e79ae14eb7405c6d591467cb0
+Patch0:		%{name}-vserver.patch
 URL:		http://sourceforge.net/project/showfiles.php?group_id=13130
 %if %{with kernel}
 %{?with_dist_kernel:BuildRequires:	kernel%{_alt_kernel}-module-build >= 3:2.6.20.2}
@@ -48,20 +49,27 @@ This package contains Linux modules.
 
 %prep
 %setup -qc
+%patch0 -p1
 
 %build
 %if %{with kernel}
-%build_kernel_modules ABI_DIR=$PWD ABI_VER=%(uname -r) -m all
+export ABI_DIR=$PWD
+export ABI_VER=%(uname -r)
+touch dummy.ko
+%build_kernel_modules -m dummy
+rm dummy.ko
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT{/lib/modules/%{_kernel_ver}/kernel/misc,%{_sbindir}}
 
 %if %{with userspace}
 %endif
 
 %if %{with kernel}
-%install_kernel_modules -m all -d kernel/misc
+install -m644 */*.ko $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/kernel/misc
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
