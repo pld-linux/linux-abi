@@ -57,18 +57,18 @@ export ABI_DIR=$PWD
 export ABI_VER=%(uname -r)
 touch dummy.ko
 %build_kernel_modules -m dummy
-rm dummy.ko
+rm dummy*.ko
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{/lib/modules/%{_kernel_ver}/kernel/misc,%{_sbindir}}
+install -d $RPM_BUILD_ROOT{/lib/modules/%{_kernel_ver}/misc,%{_sbindir}}
 
 %if %{with userspace}
 %endif
 
 %if %{with kernel}
-install -m644 */*.ko $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/kernel/misc
+install -m644 */*.ko $RPM_BUILD_ROOT/lib/modules/%{_kernel_ver}/misc
 %endif
 
 %clean
@@ -83,7 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with kernel}
 %files -n kernel%{_alt_kernel}-misc-abi
 %defattr(644,root,root,755)
-/lib/modules/%{_kernel_ver}/kernel/misc/*.ko*
+/lib/modules/%{_kernel_ver}/misc/*.ko*
 %endif
 
 %if %{with userspace}
