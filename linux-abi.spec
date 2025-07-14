@@ -49,7 +49,7 @@ This package contains Linux modules.
 
 %prep
 %setup -qc
-%patch0 -p1
+%patch -P0 -p1
 
 %build
 %if %{with kernel}
